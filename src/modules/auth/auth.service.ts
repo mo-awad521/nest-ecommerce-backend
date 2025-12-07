@@ -22,7 +22,8 @@ import { ResetPasswordDto } from './dtos/reset-password.dto';
 //   Types
 // -----------------------------
 import { JwtPayload } from './types/jwt-payload.type';
-import { User } from '../users/entities/user.entity';
+//import { User } from '../users/entities/user.entity';
+import { UserResponseDto } from '../users/dtos/user-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -223,9 +224,9 @@ export class AuthService {
 
   async profile(
     userId: number,
-  ): Promise<{ message: string; user: User | null }> {
-    const data = await this.usersService.findById(userId);
-    return { message: 'user data', user: data || null };
+  ): Promise<{ message: string; user: UserResponseDto | null }> {
+    const data = await this.usersService.prfile(userId);
+    return { message: 'user data', user: data };
   }
 
   // -----------------------------

@@ -1,9 +1,6 @@
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 export class CreateAddressDto {
-  @IsNumber()
-  userId: number;
-
   @IsString()
   @IsNotEmpty()
   street: string;

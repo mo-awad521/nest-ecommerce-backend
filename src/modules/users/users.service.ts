@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { UserResponseDto } from './dtos/user-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -29,6 +30,10 @@ export class UsersService {
   }
 
   async findById(id: number): Promise<User | null> {
+    return await this.usersRepo.findOne({ where: { id } });
+  }
+
+  async prfile(id: number): Promise<UserResponseDto | null> {
     return await this.usersRepo.findOne({ where: { id } });
   }
 
