@@ -1,8 +1,18 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EmailModule } from './modules/email/email.module';
-import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+//import { EmailModule } from './modules/email/email.module';
+//import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+import { AuthModule } from './modules/auth/auth.module';
+//import { UsersModule } from './modules/users/users.module';
+import { AddressesModule } from './modules/addresses/addresses.module';
+import { OrdersModule } from './modules/orders/orders.module';
+import { ProductsModule } from './modules/products/products.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { CartModule } from './modules/cart/cart.module';
+import { WishlistModule } from './modules/wishlist/wishlist.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 @Module({
   imports: [
@@ -26,8 +36,15 @@ import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
       }),
       inject: [ConfigService],
     }),
-    EmailModule,
-    CloudinaryModule,
+    AuthModule,
+    AddressesModule,
+    OrdersModule,
+    ProductsModule,
+    ReviewsModule,
+    CategoriesModule,
+    CartModule,
+    WishlistModule,
+    PaymentsModule,
   ],
 })
 export class AppModule {}

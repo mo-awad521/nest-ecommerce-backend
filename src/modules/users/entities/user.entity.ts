@@ -30,16 +30,19 @@ export class User extends BaseEntity {
   isVerified: boolean;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  verificationToken?: string;
-
-  @Column({ type: 'timestamp', nullable: true })
-  verificationTokenExpires?: Date;
+  currentHashedRefreshToken?: string | null;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  resetPasswordToken?: string;
+  verificationToken?: string | null;
 
   @Column({ type: 'timestamp', nullable: true })
-  resetPasswordExpires?: Date;
+  verificationTokenExpires?: Date | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  resetPasswordToken?: string | null;
+
+  @Column({ type: 'timestamp', nullable: true })
+  resetPasswordExpires?: Date | null;
 
   // -------- relations --------
 

@@ -4,7 +4,10 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
 import * as path from 'path';
+
 import { EmailTokenPayload } from './types/email-token.interface';
+import { existsSync } from 'fs';
+//import { join } from 'path';
 
 @Injectable()
 export class EmailService {
@@ -16,7 +19,7 @@ export class EmailService {
   ) {
     this.transporter = nodemailer.createTransport({
       host: this.config.get('EMAIL_HOST'),
-      port: this.config.get<number>('EMAIL_PORT'),
+      //port: this.config.get<number>('EMAIL_PORT'),
       secure: false,
       auth: {
         user: this.config.get('EMAIL_USER'),
@@ -34,12 +37,29 @@ export class EmailService {
   async sendVerificationEmail(email: string, token: string) {
     const verificationUrl = `${this.config.get('EMAIL_VERIFICATION_URL')}?token=${token}`;
 
-    // Load Template
+    //Load Template
+    // const templatePath = path.join(
+    //   __dirname,
+    //   'templates',
+    //   'verification-email.html',
+    // );
     const templatePath = path.join(
-      __dirname,
+      process.cwd(),
+      'src',
+      'modules',
+      'email',
       'templates',
       'verification-email.html',
     );
+
+    //------------------
+    console.log('--- FINAL DIAGNOSTICS ---');
+    console.log('1. __dirname (Current directory):', __dirname);
+    console.log('2. templatePath (Calculated Path):', templatePath);
+    console.log('3. File Exists (fs.existsSync):', existsSync(templatePath));
+    console.log('---------------------------');
+
+    //------------------
 
     let html = fs.readFileSync(templatePath, 'utf8');
     html = html.replace('{{VERIFY_LINK}}', verificationUrl);

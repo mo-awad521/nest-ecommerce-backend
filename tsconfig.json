@@ -13,6 +13,7 @@
     "strictPropertyInitialization": false, // make all proerties in every entity prop!:
     "outDir": "./dist",
     "baseUrl": "./",
+    "typeRoots": ["./node_modules/@types", "./src/types"],
     "paths": {
       "*": ["node_modules/*"]
     },

@@ -2,18 +2,24 @@
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
   "sourceRoot": "src/modules",
+
+  "assets": [
+    {
+      "include": "**/*.hbs",
+      "outDir": "dist"
+    },
+    {
+      "include": "emails/**/*",
+      "outDir": "dist"
+    },
+    {
+      "include": "**/templates/*.html",
+      "outDir": "dist"
+    }
+  ],
+
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": [
-      {
-        "include": "**/*.hbs",
-        "outDir": "dist"
-      },
-      {
-        "include": "emails/**/*",
-        "outDir": "dist"
-      }
-    ],
     "watchAssets": true
   }
 }

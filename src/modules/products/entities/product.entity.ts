@@ -14,7 +14,6 @@ export class Product extends BaseEntity {
   @Column()
   title: string;
 
-  @Index()
   @Column({ unique: true })
   slug: string;
 
