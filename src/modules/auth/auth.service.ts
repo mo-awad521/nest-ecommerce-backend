@@ -44,10 +44,15 @@ export class AuthService {
   //   JWT Helpers
   // -----------------------------
 
-  private getJwtAccessToken(userId: number, email: string): string {
+  private getJwtAccessToken(
+    userId: number,
+    email: string,
+    role: string,
+  ): string {
     const payload: JwtPayload = {
       sub: userId,
       email,
+      role,
     };
     const secret = this.configService.get<string>('JWT_SECRET');
 
@@ -61,10 +66,15 @@ export class AuthService {
     });
   }
 
-  private getJwtRefreshToken(userId: number, email: string): string {
+  private getJwtRefreshToken(
+    userId: number,
+    email: string,
+    role: string,
+  ): string {
     const payload: JwtPayload = {
       sub: userId,
       email,
+      role,
     };
     const secret = this.configService.get<string>('REFRESH_TOKEN_SECRET');
 
@@ -83,7 +93,7 @@ export class AuthService {
   // -----------------------------
   //   REGISTER
   // -----------------------------
-  async register(dto: RegisterDto): Promise<{ message: string }> {
+  async register(dto: RegisterDto): Promise<void> {
     const existing = await this.usersService.findByEmail(dto.email);
     if (existing) {
       throw new BadRequestException('Email already in use');
@@ -114,9 +124,9 @@ export class AuthService {
       console.error('Email sending failed:', err);
     }
 
-    return {
-      message: 'User registered. Please check your email to verify account.',
-    };
+    // return {
+    //   message: 'User registered. Please check your email to verify account.',
+    // };
   }
 
   // -----------------------------
@@ -161,8 +171,12 @@ export class AuthService {
     );
     if (!valid) throw new UnauthorizedException('Invalid credentials');
 
-    const accessToken = this.getJwtAccessToken(user.id, user.email);
-    const refreshToken = this.getJwtRefreshToken(user.id, user.email);
+    const accessToken = this.getJwtAccessToken(user.id, user.email, user.role);
+    const refreshToken = this.getJwtRefreshToken(
+      user.id,
+      user.email,
+      user.role,
+    );
 
     const hashedRefresh = await bcrypt.hash(refreshToken, this.saltRounds);
     await this.usersService.setCurrentRefreshToken(hashedRefresh, user.id);
@@ -198,8 +212,16 @@ export class AuthService {
 
     if (!isMatch) throw new ForbiddenException('Access Denied');
 
-    const newAccessToken = this.getJwtAccessToken(user.id, user.email);
-    const newRefreshToken = this.getJwtRefreshToken(user.id, user.email);
+    const newAccessToken = this.getJwtAccessToken(
+      user.id,
+      user.email,
+      user.role,
+    );
+    const newRefreshToken = this.getJwtRefreshToken(
+      user.id,
+      user.email,
+      user.role,
+    );
 
     const hashed = await bcrypt.hash(newRefreshToken, this.saltRounds);
     await this.usersService.setCurrentRefreshToken(hashed, user.id);

@@ -1,4 +1,3 @@
-// src/common/entities/base.entity.ts
 import {
   PrimaryGeneratedColumn,
   CreateDateColumn,

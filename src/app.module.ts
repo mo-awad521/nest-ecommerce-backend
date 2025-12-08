@@ -13,6 +13,8 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { CartModule } from './modules/cart/cart.module';
 import { WishlistModule } from './modules/wishlist/wishlist.module';
 import { PaymentsModule } from './modules/payments/payments.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 @Module({
   imports: [
@@ -45,6 +47,12 @@ import { PaymentsModule } from './modules/payments/payments.module';
     CartModule,
     WishlistModule,
     PaymentsModule,
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransformInterceptor,
+    },
   ],
 })
 export class AppModule {}

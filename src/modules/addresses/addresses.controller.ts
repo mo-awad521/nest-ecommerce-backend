@@ -16,6 +16,7 @@ import { UpdateAddressDto } from './dtos/update-address.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { JwtPayload } from '../auth/types/jwt-payload.type';
+import { ResponseMessage } from '../../common/decorators/response-message.decorator';
 
 @Controller('addresses')
 @UseGuards(JwtAuthGuard)
@@ -31,6 +32,7 @@ export class AddressesController {
   }
 
   @Get()
+  @ResponseMessage('All Addresses')
   findAll(@CurrentUser() user: JwtPayload) {
     return this.addressesService.findAllForUser(user.sub);
   }

@@ -8,6 +8,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RefreshTokenGuard } from '../../common/guards/refresh-token.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { JwtPayload } from './types/jwt-payload.type';
+import { ResponseMessage } from '../../common/decorators/response-message.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -17,6 +18,7 @@ export class AuthController {
   // Register
   // -------------------------------
   @Post('register')
+  @ResponseMessage('User registration successful. Please verify your email.')
   async register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
   }
@@ -25,6 +27,7 @@ export class AuthController {
   // Login
   // -------------------------------
   @Post('login')
+  @ResponseMessage('Login successfuly!')
   async login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }

@@ -1,4 +1,5 @@
 import { IsEmail, IsString, MinLength, MaxLength } from 'class-validator';
+//import { Role } from '../../../common/enums/role.enum';
 
 export class RegisterDto {
   @IsString()
@@ -18,4 +19,7 @@ export class RegisterDto {
   @MinLength(6)
   @MaxLength(50)
   password: string;
+
+  // @IsString()
+  // role: Role.ADMIN;
 }
