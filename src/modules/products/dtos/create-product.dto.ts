@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsString,
   IsNotEmpty,
@@ -14,28 +15,24 @@ export class CreateProductDto {
   @IsNotEmpty()
   title: string;
 
-  @IsString()
-  @IsNotEmpty()
-  slug: string;
-
   @IsOptional()
   @IsString()
   description?: string;
 
+  @Type(() => Number)
   @IsNumber()
   price: number;
 
+  @Type(() => Number)
   @IsInt()
   @Min(0)
   stock: number;
 
   @IsOptional()
+  @Type(() => Number)
   @IsInt()
   categoryId?: number;
 
-  // صور المنتج (روابط Cloudinary)
-  @IsArray()
-  @ArrayMinSize(1)
-  @IsString({ each: true })
-  images: string[];
+  @IsOptional()
+  images?: Express.Multer.File[];
 }

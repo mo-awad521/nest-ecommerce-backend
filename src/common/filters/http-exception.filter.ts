@@ -4,44 +4,53 @@ import {
   ArgumentsHost,
   HttpException,
 } from '@nestjs/common';
-import { Response as ExpressResponse } from 'express';
+import { Response as ExpressResponse, Request } from 'express';
+
+interface ErrorResponse {
+  message?: string | string[];
+  error?: string;
+  [key: string]: unknown;
+}
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<ExpressResponse>();
+    const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
     const exceptionResponse = exception.getResponse();
 
-    let errorMessage: string = 'Error occurred';
-    let errorDetails: string | undefined = undefined;
+    const isDevelopment = process.env.NODE_ENV !== 'production';
 
-    if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
-      const errorObject = exceptionResponse as Record<string, any>;
+    const errorResponse: ErrorResponse =
+      typeof exceptionResponse === 'string'
+        ? { message: exceptionResponse }
+        : (exceptionResponse as ErrorResponse);
 
-      if (typeof errorObject.message === 'string') {
-        errorMessage = errorObject.message;
-      }
+    const mainMessage: string = Array.isArray(errorResponse.message)
+      ? errorResponse.message.join(', ')
+      : (errorResponse.message as string) || exception.message;
 
-      if (errorObject.error && typeof errorObject.error === 'string') {
-        errorDetails = errorObject.error;
-      } else if (errorObject.message && Array.isArray(errorObject.message)) {
-        errorDetails = errorObject.message.join(', ');
-      }
-    } else if (typeof exceptionResponse === 'string') {
-      errorMessage = exceptionResponse;
+    if (isDevelopment) {
+      response.status(status).json({
+        statusCode: status,
+        message: mainMessage,
+        error: (errorResponse.error as string) || null,
+        details: errorResponse,
+        timestamp: new Date().toISOString(),
+        path: request.url,
+        env: 'development',
+      });
+    } else {
+      // production mode
+      response.status(status).json({
+        statusCode: status,
+        message: mainMessage || 'Something went wrong',
+        error: (errorResponse.error as string) || 'Bad Request',
+        timestamp: new Date().toISOString(),
+        path: request.url,
+      });
     }
-
-    response.status(status).json({
-      statusCode: status,
-
-      message: errorMessage,
-
-      error: errorDetails || exception.message,
-      //error: 'error',
-
-      timestamp: new Date().toISOString(),
-    });
   }
 }

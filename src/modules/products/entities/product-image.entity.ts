@@ -12,8 +12,8 @@ export class ProductImage extends BaseEntity {
   @Column({ default: false })
   isPrimary: boolean;
 
-  @Column({ nullable: true })
-  alt?: string;
+  @Column()
+  publicId: string;
 
   @ManyToOne(() => Product, (product) => product.images, {
     onDelete: 'CASCADE',

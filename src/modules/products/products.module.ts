@@ -7,6 +7,9 @@ import { OrderItem } from '../orders/entities/order-item.entity';
 import { Review } from '../reviews/entities/review.entity';
 import { Wishlist } from '../wishlist/entities/wishlist.entity';
 import { CategoriesModule } from '../categories/categories.module';
+import { ProductsService } from './products.service';
+import { ProductsController } from './products.controller';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -19,9 +22,10 @@ import { CategoriesModule } from '../categories/categories.module';
       Wishlist,
     ]),
     CategoriesModule,
+    CloudinaryModule,
   ],
-  providers: [],
+  providers: [ProductsService],
   exports: [TypeOrmModule],
-  controllers: [],
+  controllers: [ProductsController],
 })
 export class ProductsModule {}
