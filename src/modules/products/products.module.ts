@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { ProductImage } from './entities/product-image.entity';
@@ -10,6 +10,7 @@ import { CategoriesModule } from '../categories/categories.module';
 import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
+import { CartModule } from '../cart/cart.module';
 
 @Module({
   imports: [
@@ -23,9 +24,10 @@ import { CloudinaryModule } from '../cloudinary/cloudinary.module';
     ]),
     CategoriesModule,
     CloudinaryModule,
+    forwardRef(() => CartModule),
   ],
   providers: [ProductsService],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, ProductsService],
   controllers: [ProductsController],
 })
 export class ProductsModule {}

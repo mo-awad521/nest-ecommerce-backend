@@ -6,8 +6,6 @@ import {
   IsNumber,
   IsInt,
   Min,
-  IsArray,
-  ArrayMinSize,
 } from 'class-validator';
 
 export class CreateProductDto {
