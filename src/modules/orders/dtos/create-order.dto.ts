@@ -23,6 +23,10 @@ export class CreateOrderDto {
   items: OrderItemInputDto[];
 
   @IsOptional()
+  @IsInt()
+  addressId?: number;
+
+  @IsOptional()
   @IsEnum(PaymentMethod)
   paymentMethod?: PaymentMethod;
 }

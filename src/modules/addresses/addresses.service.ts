@@ -30,6 +30,11 @@ export class AddressesService {
     });
   }
 
+  async findOne(userId: number) {
+    const address = await this.addressRepo.findOne({ where: { id: userId } });
+    return address;
+  }
+
   async findOneForUser(id: number, userId: number) {
     const address = await this.addressRepo.findOne({
       where: { id, user: { id: userId } },

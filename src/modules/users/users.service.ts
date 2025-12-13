@@ -33,6 +33,13 @@ export class UsersService {
     return await this.usersRepo.findOne({ where: { id } });
   }
 
+  async findByIdWithAddresses(id: number) {
+    return await this.usersRepo.findOne({
+      where: { id },
+      relations: ['addresses'],
+    });
+  }
+
   async prfile(id: number): Promise<UserResponseDto | null> {
     return await this.usersRepo.findOne({ where: { id } });
   }

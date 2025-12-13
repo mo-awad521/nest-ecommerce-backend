@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import slugify from 'slugify';
 
 import { Product } from './entities/product.entity';
@@ -195,5 +195,14 @@ export class ProductsService {
     }
     await this.productRepo.remove(product);
     return { deleted: true };
+  }
+  // =====================================
+  // Find Many Products by Ids
+  // =====================================
+  findManyByIds(ids: number[]) {
+    return this.productRepo.find({
+      where: { id: In(ids) },
+      relations: ['images'],
+    });
   }
 }

@@ -23,4 +23,7 @@ export class Address extends BaseEntity {
     onDelete: 'CASCADE',
   })
   user: User;
+
+  @Column({ type: 'boolean', default: false })
+  isDefault: boolean;
 }

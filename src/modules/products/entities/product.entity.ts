@@ -23,7 +23,7 @@ export class Product extends BaseEntity {
   @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
-  @Column({ default: 0 })
+  @Column({ type: 'int', default: 0 })
   stock: number;
 
   @Column({ default: 0, type: 'float' })
