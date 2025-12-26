@@ -1,148 +1,126 @@
+---
 🛍️ E-commerce Backend API (NestJS + TypeORM)
 A robust, scalable, and fully-featured E-commerce backend built with NestJS, TypeORM, and MySQL. This project follows a Modular Architecture, ensuring clean code, maintainability, and high performance. It supports complete shopping workflows, secure authentication, and a powerful administrative dashboard.
+---
 
 🚀 Features
-👤 User Management & Security
-JWT Authentication: Secure login and registration using Passport.js and JWT strategies.
 
-RBAC (Role-Based Access Control): Granular access control for Customer and Admin roles via NestJS Guards.
+👤 User & Authentication
 
-Address Management: Support for multiple shipping addresses per user.
+User registration & login with JWT.
 
-Password Security: Industry-standard hashing using bcrypt.
+Role-based authorization (Customer, Admin).
 
-📦 Product & Catalog Management
-Full CRUD: Complete management for products and categories.
+Manage multiple shipping addresses per user.
 
-SEO Optimization: Automatic slug generation for search-engine-friendly URLs.
+Password hashing with bcrypt.
 
-Media Handling: Integrated file uploads (Multer) with Cloudinary for cloud-based image storage.
+📦 Product & Category Management
 
-Advanced Querying: Built-in support for searching, filtering by category/price, and pagination.
+Full CRUD operations for products & categories.
 
-🛒 Shopping Experience
-Personal Cart: Manage cart items (add, update quantity, remove) linked to the user session.
+Automatic slug generation for SEO-friendly URLs.
 
-Wishlist System: Allow users to save their favorite products for later.
+Multiple product images (Multer + Cloudinary).
 
-📑 Order Workflow & Lifecycle
-Order Creation: Seamless transition from shopping cart to checkout.
+Filtering, searching, and pagination.
 
-Status Tracking: Comprehensive lifecycle management: PENDING → PAID → SHIPPED → DELIVERED → COMPLETED
+Admin-only access for managing products.
 
-Cancellations & Returns: Built-in logic for CANCELED and RETURNED statuses.
+🛒 Cart & Wishlist
 
-Order History: Users can view their past orders and current statuses.
+Personal cart for each user (add, update, remove items).
 
-🛠️ Admin Dashboard & Analytics
-User & Role Management: View all users, modify roles, or deactivate accounts.
+Wishlist system to save favorite products.
 
-Global Order Control: Update order statuses and manage global sales.
+📑 Orders & Workflow
 
-Reporting:
+Create orders directly from cart.
 
-Total User Count.
+Track order lifecycle:
 
-Total Revenue calculation from successful payments.
+PENDING → PAID → SHIPPED → DELIVERED → COMPLETED
 
-Order breakdown by status.
+Support for CANCELED / RETURNED.
 
-Top-selling products analytics.
+Order history per user.
+
+💳 Payments
+
+Payments linked to orders.
+
+Track payment status:
+
+PENDING, SUCCESS, FAILED, REFUNDED, DISPUTED.
+
+Admin can view & filter payments.
+
+🛠️ Admin Dashboard
+
+User Management: View users, change roles, delete users.
+
+Product Management: Add/edit/delete products & categories.
+
+Order Management: Update order statuses.
+
+Payments Management: View all payments by status.
+
+Reports Dashboard:
+
+Total users.
+
+Total orders + breakdown by status.
+
+Total revenue from successful payments.
+
+Top-selling products.
+
+---
 
 🛠️ Tech Stack
-Framework: NestJS (Node.js)
 
-Database: MySQL
+Node.js + Nest.js
 
-ORM: TypeORM
+MySQL + TypeORM
 
-Language: TypeScript
+JWT Authentication
 
-Auth: Passport.js & JWT
+Multer + Cloudinary (file uploads)
 
-File Storage: Cloudinary
+bcrypt (password hashing)
 
-Validation: Class-validator & Class-transformer
+---
 
-📂 Project Structure
-Plaintext
-
-src/
-├── modules/
-│ ├── auth/ # Login, Signup, and JWT Strategies
-│ ├── users/ # User profiles and Address Entities
-│ ├── products/ # Product & Category management
-│ ├── cart/ # Shopping cart business logic
-│ ├── orders/ # Order processing and status management
-│ ├── payments/ # Payment tracking and integration
-│ └── admin/ # Statistics and administrative reports
-├── common/ # Global Guards, Interceptors, and Middlewares
-├── config/ # Configuration for DB, JWT, and Cloudinary
-├── database/ # TypeORM Entities and Migrations
-└── main.ts # Application entry point
 ⚡ Getting Started
 
-1. Clone the Repository
-   Bash
+1. Clone repository
 
 git clone https://github.com/mo-awad521/nest-ecommerce-backend
-cd nest-ecommerce-backend Install Dependencies
-Bash
+cd nest-ecommerce-backend
 
-Environment Setup
-Create a .env file in the root directory and configure your variables:
+2. Install dependencies
 
-# Database Configuration
+```
+npm install
 
-DB_HOST=localhost
-DB_PORT=3306
-DB_USERNAME=root
-DB_PASSWORD=your_password
-DB_DATABASE=ecommerce_db
+```
 
-# Security
+3. Setup environment
 
-JWT_SECRET=your_super_secret_key
+Create .env file:
 
-# Cloudinary (Optional for Image Uploads)
+DATABASE_URL="mysql://user:password@localhost:3306/ecommerce"
+JWT_SECRET="your_jwt_secret"
+CLOUDINARY_CLOUD_NAME="your_cloud_name"
+CLOUDINARY_API_KEY="your_api_key"
+CLOUDINARY_API_SECRET="your_api_secret"
+FRONTEND_URL= Frontend_Url
+EMAIL_USER=-----
+EMAIL_PASS=----
 
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret 4. Database Migrations
-Generate and run migrations to set up your MySQL schema:
+4. Run server
 
-Bash
-
-npm run typeorm migration:run 5. Run the Application
-Bash
-
-# Development mode
-
+```
 npm run start:dev
 
-# Production mode
-
-npm run start:prod
-📊 Example Admin Report Response
-JSON
-
-{
-"users": { "total": 35 },
-"orders": {
-"total": 120,
-"byStatus": [
-{ "status": "PENDING", "count": 20 },
-{ "status": "DELIVERED", "count": 70 }
-]
-},
-"sales": {
-"totalRevenue": "15500.00"
-},
-"topProducts": [
-{ "id": 1, "title": "iPhone 15", "totalSold": 25 }
-]
-}
-📌 Author
-👤 Mohammad Alawad
-
-GitHub: @mo-awad521
+```
