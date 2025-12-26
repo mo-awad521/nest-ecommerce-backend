@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   ParseIntPipe,
   Put,
+  Query,
 } from '@nestjs/common';
 
 import { ProductsService } from './products.service';
@@ -23,6 +24,8 @@ import { ResponseMessage } from '../../common/decorators/response-message.decora
 
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+//import { Product } from './entities/product.entity';
+import { ProductFilterQueryDto } from './dtos/product-filter-query.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -45,11 +48,24 @@ export class ProductsController {
   // =============================
   // GET ALL PRODUCTS
   // =============================
+
+  // =====================================================
+  // GET ALL PRODUCTS (PAGINATED)
+  // =====================================================
   @Get()
   @ResponseMessage('Products fetched successfully')
-  async findAll() {
-    return this.productsService.findAll();
+  async findAll(
+    @Query() filters: ProductFilterQueryDto, // هذا الكائن يحتوي الآن على page, limit, و search تلقائياً
+  ) {
+    // نمرر كائن واحد فقط للخدمة
+    return this.productsService.findAll(filters);
   }
+
+  // @Get()
+  // @ResponseMessage('Products fetched successfully')
+  // async findAll() {
+  //   return this.productsService.findAll();
+  // }
 
   // =============================
   // GET ONE PRODUCT

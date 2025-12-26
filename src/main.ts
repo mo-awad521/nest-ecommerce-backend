@@ -12,7 +12,10 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
-      transform: true,
+      transform: true, // يحول القيم تلقائياً للأنواع المعرفة في الـ DTO
+      transformOptions: {
+        enableImplicitConversion: true, // يغنيك عن كتابة @Type(() => Number) في كثير من الأحيان
+      },
     }),
   );
 

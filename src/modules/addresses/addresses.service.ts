@@ -21,6 +21,9 @@ export class AddressesService {
       ...createDto,
       user: { id: userId },
     });
+    if (!address) {
+      throw new Error('Faild Create Address');
+    }
     return this.addressRepo.save(address);
   }
 

@@ -10,6 +10,11 @@ import { Category } from '../categories/entities/category.entity';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { UpdateProductDto } from './dtos/update-product.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+//import { PaginatedResponseDto } from '../../common/dtos/paginated-response.dto';
+//import { PaginationQueryDto } from '../../common/dtos/pagination-query.dto';
+import { paginate } from '../../common/pagination/paginate';
+import { ProductFilterQueryDto } from './dtos/product-filter-query.dto';
+import { PaginatedResult } from '../../common/dtos/paginated-result.interface';
 
 @Injectable()
 export class ProductsService {
@@ -80,12 +85,68 @@ export class ProductsService {
   // =====================================
   // GET ALL
   // =====================================
-  async findAll(): Promise<Product[]> {
-    return this.productRepo.find({
-      relations: ['images', 'category'],
-      order: { createdAt: 'DESC' },
-    });
+  async findAll(
+    filters: ProductFilterQueryDto,
+  ): Promise<PaginatedResult<Product>> {
+    const {
+      page,
+      limit,
+      search,
+      categoryId,
+      inStock,
+      sortBy,
+      order,
+      minPrice,
+      maxPrice,
+    } = filters;
+
+    const queryBuilder = this.productRepo
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.images', 'images');
+
+    if (search) {
+      queryBuilder.andWhere(
+        '(product.title LIKE :search OR product.description LIKE :search)',
+        { search: `%${search}%` },
+      );
+    }
+
+    if (categoryId) {
+      queryBuilder.andWhere('category.id = :categoryId', { categoryId });
+    }
+
+    if (minPrice !== undefined) {
+      queryBuilder.andWhere('product.price >= :minPrice', { minPrice });
+    }
+    if (maxPrice !== undefined) {
+      queryBuilder.andWhere('product.price <= :maxPrice', { maxPrice });
+    }
+
+    if (inStock === true) {
+      queryBuilder.andWhere('product.stock > 0');
+    } else if (inStock === false) {
+      queryBuilder.andWhere('product.stock = 0');
+    }
+
+    const validSortFields = ['createdAt', 'price', 'title'];
+    const finalSortBy = validSortFields.includes(sortBy!)
+      ? `product.${sortBy}`
+      : 'product.createdAt';
+    const finalOrder = order || 'DESC';
+
+    queryBuilder.orderBy(finalSortBy, finalOrder);
+
+    return paginate<Product>(queryBuilder, page, limit);
   }
+
+  // async findAll(): Promise<Product[]> {
+  //   return this.productRepo.find({
+  //     relations: ['images', 'category'],
+  //     order: { createdAt: 'DESC' },
+  //   });
+  // }
+  //---------------------------------------------
 
   // =====================================
   // GET ONE

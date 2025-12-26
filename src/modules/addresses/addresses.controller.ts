@@ -1,5 +1,3 @@
-// src/modules/addresses/addresses.controller.ts
-
 import {
   Controller,
   Get,
